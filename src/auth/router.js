@@ -20,7 +20,7 @@ router.get('/signup', async (req, res) => {
 
 // Signin Route -- login with username and password
 router.post('/signin', basicAuth, async (req, res) => {
-  res.status(200).json(req.user);
+  res.status(200).send(req.user);
 });
 
 module.exports = router;

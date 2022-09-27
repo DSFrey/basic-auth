@@ -5,16 +5,21 @@ const base64 = require('base-64');
 const { Users } = require('../models/users-model');
 
 let hashPassword = async (password) => {
-  console.log(Users);
   return await bcrypt.hash(password, 10);
 };
+
+Users.beforeCreate(async (user) => {
+  const hashedPhrase = await hashPassword(user.password);
+  user.password = hashedPhrase;
+});
 
 let basicAuth = async (req, res, next) => {
   let encodedString = req.headers.authorization.split(' ').pop();  // sdkjdsljd=
   let decodedString = base64.decode(encodedString); // "username:password"
   let [username, password] = decodedString.split(':'); // username, password
   try {
-    const user = await Users.findOne({ where: { username: username } });
+    console.log(username,password);
+    const user = await Users.findOne({ where: { username } });
     const valid = await bcrypt.compare(password, user.password);
     if (valid) {
       req.user = user;

@@ -1,12 +1,20 @@
 'use strict';
 
+require('dotenv').config();
 const { Sequelize, DataTypes } = require('sequelize');
-const { hashPassword } = require('../middleware/basic');
 
-const DATABASE_URL = 'sqlite:memory';
-const sequelize = new Sequelize(DATABASE_URL);
+const DATABASE_URL = process.env.NODE_ENV === 'test'
+  ? 'sqlite::memory'
+  : process.env.DATABASE_URL;
+let options = process.env.NODE_ENV === 'production' ? {
+  dialectOptions: {
+    ssl: true,
+    rejectUnauthorized: false,
+  },
+} : {};
+const sequelize = new Sequelize(DATABASE_URL, options);
 
-const Users = sequelize.define('User', {
+const Users = sequelize.define('Users', {
   username: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -15,11 +23,6 @@ const Users = sequelize.define('User', {
     type: DataTypes.STRING,
     allowNull: false,
   },
-});
-
-Users.beforeCreate(async (user) => {
-  const hashedPhrase = await hashPassword(user.password);
-  user.password = hashedPhrase;
 });
 
 module.exports = { sequelize, Users };
