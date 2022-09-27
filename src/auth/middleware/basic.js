@@ -19,7 +19,6 @@ let basicAuth = async (req, res, next) => {
   let decodedString = base64.decode(encodedString); // "username:password"
   let [username, password] = decodedString.split(':'); // username, password
   try {
-    console.log(username, password);
     const user = await Users.findOne({ where: { username } });
     if (user) {
       const valid = await bcrypt.compare(password, user.password);
@@ -30,7 +29,7 @@ let basicAuth = async (req, res, next) => {
     }
     throw new Error('Invalid Login');
   } catch (error) {
-    errorHandler(error, req, res);
+    next('Invalid Login');
   }
 
 };

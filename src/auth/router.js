@@ -7,7 +7,6 @@ const { Users } = require('./models/users-model');
 // Signup Route -- create a new user
 
 router.post('/signup', async (req, res) => {
-  console.log(req.body);
   try {
     const record = await Users.create(req.body);
     res.status(201).send(record);
