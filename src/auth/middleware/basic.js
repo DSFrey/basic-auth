@@ -3,7 +3,6 @@
 const bcrypt = require('bcrypt');
 const base64 = require('base-64');
 const { Users } = require('../models/users-model');
-const errorHandler = require('../../middleware/500');
 
 let hashPassword = async (password) => {
   return await bcrypt.hash(password, 10);

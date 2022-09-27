@@ -12,10 +12,6 @@ router.post('/signup', async (req, res) => {
     res.status(201).send(record);
   } catch (e) { res.status(403).send('Error Creating User'); }
 });
-router.get('/signup', async (req, res) => {
-  let records = await Users.findAll();
-  res.status(200).send(records);
-});
 
 // Signin Route -- login with username and password
 router.post('/signin', basicAuth, async (req, res) => {
