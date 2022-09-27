@@ -10,7 +10,7 @@ router.post('/signup', async (req, res) => {
   console.log(req.body);
   try {
     const record = await Users.create(req.body);
-    res.status(200).json(record);
+    res.status(201).send(record);
   } catch (e) { res.status(403).send('Error Creating User'); }
 });
 router.get('/signup', async (req, res) => {

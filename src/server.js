@@ -15,6 +15,7 @@ const PORT = process.env.PORT || 3002;
 
 app.use(router);
 app.use('*',notFound);
+console.log('in server');
 app.use(errorHandler);
 
 function start() {
